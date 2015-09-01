@@ -33,4 +33,14 @@ class SwapRequestTest < ActiveSupport::TestCase
     assert swap_requests(:one).target.is_a?(Schedule)
   end
 
+  #### Methods #################################################################
+
+  test "should fulfill a swap requet" do
+    requester = schedules(:one).employee
+    requested_date = schedules(:two).support_date
+
+    swap_requests(:one).fulfill
+    assert scheduled_dates(requester).include?(requested_date)
+  end
+
 end
