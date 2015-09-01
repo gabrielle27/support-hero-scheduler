@@ -22,4 +22,16 @@ class SchedulesControllerTest < ActionController::TestCase
     assert_nil assigns(:current_hero)
   end
 
+  test "feed" do
+    get :feed, format: :json
+    assert_response :success
+  end
+
+  test "should receive schedule feed data" do
+    schedule = schedules(:one)
+    get :feed, start: Date.today, end: schedule.support_date, format: :json
+    first_response = json_value(@response, "support_date")
+    assert json_value(@response, "support_date") == schedule.support_date.to_s
+  end
+
 end
