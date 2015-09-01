@@ -28,4 +28,8 @@ class ActiveSupport::TestCase
    "a" * 256
   end
 
+  def scheduled_dates(employee)
+    Schedule.where(employee_id: employee ).pluck(:support_date)
+  end
+
 end

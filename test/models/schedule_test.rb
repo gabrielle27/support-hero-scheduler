@@ -64,5 +64,17 @@ class ScheduleTest < ActiveSupport::TestCase
     assert Schedule.count == existing_schedules + employee_list.size
   end
 
+  test "should reschedule around a conflict" do
+    ## 2 employees
+    ## 2 support dates
+    ## neither employee can work on their assigned date
+    date = schedules(:two).support_date
+    conflict = Conflict.new( employee: schedules(:two).employee,
+                             support_date: date )
+
+    Schedule.reschedule( conflict )
+
+    assert_not scheduled_dates( employees(:two) ).include?(date)
+  end
 end
 

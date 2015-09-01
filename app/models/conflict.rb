@@ -2,6 +2,8 @@ class Conflict < ActiveRecord::Base
 
   include DateValidations
 
+  attr_accessor :accomodated
+
   belongs_to :employee
 
   validates_presence_of :employee
