@@ -1,0 +1,10 @@
+.top-nav
+  %div
+    - if @current_hero
+      Today's support hero is:
+      %span.current-hero= @current_hero
+    - else
+      No one is on duty today
+
+%div
+  %hr
