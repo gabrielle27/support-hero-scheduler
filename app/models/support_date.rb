@@ -8,6 +8,15 @@ class SupportDate
     !is_weekend? && !is_holiday?
   end
 
+  def self.next_open_day
+    date = Date.today
+    while( !SupportDate.new(date).is_workday? ||
+          Schedule.where(support_date: date).exists? )
+      date = date.advance(days: 1)
+    end
+    date
+  end
+
   private
 
   def is_holiday?

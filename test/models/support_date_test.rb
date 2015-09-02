@@ -12,6 +12,16 @@ class SupportDateTest < ActiveSupport::TestCase
     assert_not SupportDate.new(holiday.support_date).is_workday?
   end
 
+  test "should identify next open day in the schedule as a workday" do
+    date = SupportDate.next_open_day
+    assert SupportDate.new(date).is_workday?
+  end
+
+  test "should identify next open day in the schedule as a non scheduled day" do
+    date = SupportDate.next_open_day
+    assert !Schedule.where(support_date: date).exists?
+  end
+
 end
 
 

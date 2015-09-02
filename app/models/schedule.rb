@@ -15,4 +15,13 @@ class Schedule < ActiveRecord::Base
   validate :support_date_is_workday
   validate :employee_available
 
+  def self.from_list(employee_list)
+    employee_list.each do |employee_name|
+      employee = Employee.find_or_create_by(name: employee_name)
+      schedule = self.create( employee: employee,
+                              support_date: SupportDate.next_open_day)
+      puts schedule.errors.full_messages
+    end
+  end
+
 end

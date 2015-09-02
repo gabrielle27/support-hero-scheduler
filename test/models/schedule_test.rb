@@ -55,5 +55,14 @@ class ScheduleTest < ActiveSupport::TestCase
     assert schedules(:two).incoming_swap_requests.size == 1
   end
 
+  #### Methods #################################################################
+
+  test "should create schedule from list" do
+    existing_schedules = Schedule.count
+    employee_list = %w(Jen Kira Fizgig)
+    Schedule.from_list( employee_list )
+    assert Schedule.count == existing_schedules + employee_list.size
+  end
+
 end
 
