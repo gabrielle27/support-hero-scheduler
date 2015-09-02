@@ -4,6 +4,15 @@ class SwapRequestsController < ApplicationController
 
   respond_to :json
 
+  def update
+    swap_request = SwapRequest.find(params[:id])
+    status = swap_request.fulfill
+  rescue Exception => e
+    status = false
+  ensure
+    render json: { success: status }
+  end
+
   def feed
     swap_requests = nil
     if current_user

@@ -17,6 +17,14 @@ scheduleEventClickResponse = (calEvent) ->
         swap_request_dialog calEvent
     return
   return
+
+swapRequestClickResponse = (calEvent) ->
+  $.ajax(url: '/signed_in').done (data) ->
+    if data.id == calEvent.employee_id
+      confirm_swap_dialog calEvent
+    return
+  return
+
 eventClickResponse = (calEvent, jsEvent, view) ->
   if dateIsCurrent(calEvent)
     if calEvent.event_type == 'schedule'
@@ -62,6 +70,32 @@ swap_request_dialog = (calEvent) ->
       schedule_swapper.dialog 'open'
     return
   return
+
+confirm_swap_dialog = (calEvent) ->
+  $.prompt calEvent.src_name + ' would like to swap support hero duty for ' + calEvent.src_support_date + ' with you.',
+    title: 'Confirm Swap Request'
+    buttons:
+      'Yes, Swap': true
+      'No, Leave Schedule As Is': false
+    focus: 1
+    submit: (e, v, m, f) ->
+      if v
+        $.ajax(
+          url: '/swap_requests/' + calEvent.id
+          method: 'PUT').done (data) ->
+          if data.success
+            $('#calendar').fullCalendar 'refetchEvents'
+            $.get '/employee/current_hero', (hero) ->
+              if hero
+                $('.current-hero').html hero.name
+              return
+          else
+            $.prompt 'Something went wrong, please try again'
+          return
+      $.prompt.close()
+      return
+  return
+
 $(document).ready ->
   $("#employee").on "change", ->
     window.location.href = "/schedules/" + $(this).children("option:selected").val()

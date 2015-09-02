@@ -30,4 +30,16 @@ class SwapRequestsControllerTest < ActionController::TestCase
     post :create, src_schedule_id: sid, target_schedule_id: tid, format: :json
     assert_not_nil json_value(@response, "id")
   end
+
+  test "update" do
+    patch :update, id: swap_requests(:one).id, format: :json
+    assert_response :success
+  end
+
+  test "should update a swap request" do
+    patch :update, id: swap_requests(:one).id, format: :json
+    assert_response :success
+    assert json_value(@response, "success")
+  end
+
 end
