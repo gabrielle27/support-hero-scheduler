@@ -1,0 +1,10 @@
+- if current_user
+  %div#schedule_swap_form{ :title => "Swap Scheduled Days" }
+    %p
+      Request to be support hero on:
+      %span.swap-date
+
+    =form_tag swap_requests_path, method: :post, multipart: true, remote: true do
+      = hidden_field_tag :target_schedule_id
+      = label :schedule, "instead of:"
+      = select_tag :src_schedule_id
