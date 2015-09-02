@@ -14,6 +14,12 @@ $(document).ready ->
         url: '/schedules/feed'
         data: employee_id: $('#employee').val()
       }
+      { url: '/holidays/feed' }
+      { url: '/swap_requests/feed' }
+      {
+        url: '/conflicts/feed'
+        data: employee_id: $('#employee').val()
+      }
     ]
     lazyFetching: false
     eventDataTransform: eventTransform

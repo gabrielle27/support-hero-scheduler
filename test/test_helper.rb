@@ -32,4 +32,11 @@ class ActiveSupport::TestCase
     Schedule.where(employee_id: employee ).pluck(:support_date)
   end
 
+  def json_value(response, key, i=0)
+    resp = JSON.parse(response.body)
+    resp = resp[i] if resp.is_a?(Array)
+    resp.fetch(key)
+  end
+
+
 end
