@@ -24,7 +24,10 @@ Rails.application.routes.draw do
   resources :swap_requests, only: [:create, :update], defaults: { format: 'json' }
 
   get 'employee/dates' => 'employees#scheduled_dates'
+  get 'employee/current_hero' => 'employees#current_hero'
+
   get 'schedules/:employee_id' => 'schedules#index'
+
   get 'signed_in' => 'application#signed_in'
 
 end

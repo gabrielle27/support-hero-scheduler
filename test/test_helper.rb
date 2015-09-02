@@ -42,4 +42,10 @@ class ActiveSupport::TestCase
     session[::CurrentUser::USER_SESSION_KEY] = employee.id
   end
 
+  def create_current_hero
+    date = SupportDate.next_open_day
+    schedule = Schedule.where(support_date: date).first
+    schedule ||= Schedule.create(support_date: date, employee: employees(:one))
+  end
+
 end

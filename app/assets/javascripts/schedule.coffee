@@ -1,7 +1,55 @@
+dateIsCurrent = (eventDate) ->
+  today = new Date
+  today = moment(today.setHours(0, 0, 0, 0))
+  !eventDate.start.isBefore(today)
+
 eventTransform = (eventData) ->
   eventData.title = eventData.event_type + ': ' + eventData.name
   eventData.start = eventData.support_date
   eventData
+
+scheduleEventClickResponse = (calEvent) ->
+  $.ajax(url: '/signed_in').done (data) ->
+    if data
+      if data.id == calEvent.employee_id
+        add_conflict calEvent
+      else
+        swap_request_dialog calEvent
+    return
+  return
+eventClickResponse = (calEvent, jsEvent, view) ->
+  if dateIsCurrent(calEvent)
+    if calEvent.event_type == 'schedule'
+      scheduleEventClickResponse calEvent
+    else if calEvent.event_type == 'swap request'
+      swapRequestClickResponse calEvent
+  return
+
+add_conflict = (calEvent) ->
+  $.prompt 'Select yes to reschedule for a different day.',
+    title: 'Are you unable to work on this day?'
+    buttons:
+      'Yes, Reschedule': true
+      'No, Leave Schedule As Is': false
+    focus: 1
+    submit: (e, v, m, f) ->
+      if v
+        $.post('/conflicts', support_date: calEvent.start.format('YYYY-MM-DD')).done (data) ->
+          if data.success
+            $('#calendar').fullCalendar 'refetchEvents'
+            $.get '/employee/current_hero', (hero) ->
+              if hero
+                $('.current-hero').html hero.name
+              return
+          else
+            if $.isArray(data.errors)
+              $.prompt data.errors.join(', ')
+            else
+              $.prompt 'Something went wrong, please try again'
+          return
+      $.prompt.close()
+      return
+  return
 
 swap_request_dialog = (calEvent) ->
   $.ajax(url: '/employee/dates').done (data) ->
@@ -69,5 +117,6 @@ $(document).ready ->
     ]
     lazyFetching: false
     eventDataTransform: eventTransform
+    eventClick: eventClickResponse
 
 
