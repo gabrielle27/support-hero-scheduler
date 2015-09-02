@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root 'schedules#index'
 
   get 'holidays/feed' => 'holidays#feed', defaults: { format: 'json' }
+  get 'swap_requests/feed' => 'swap_requests#feed', defaults: { format: 'json' }
 
   resources :conflicts, only: [:create] do
     collection do
