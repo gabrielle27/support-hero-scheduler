@@ -36,6 +36,10 @@ gem 'date_validator'
 
 
 gem 'amb'
+
+# Simple Authentication
+gem 'current_user'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

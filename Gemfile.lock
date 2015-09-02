@@ -50,6 +50,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    current_user (0.2.1)
+      rails (>= 3.2, < 5)
     date_validator (0.8.1)
       activemodel
     debug_inspector (0.0.2)
@@ -160,6 +162,7 @@ DEPENDENCIES
   amb
   byebug
   coffee-rails (~> 4.1.0)
+  current_user
   date_validator
   delorean
   fullcalendar-rails

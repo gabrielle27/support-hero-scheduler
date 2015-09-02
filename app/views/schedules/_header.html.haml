@@ -18,5 +18,16 @@
 
   %div
     = link_to "Load Schedule", nil, { :id => "schedule_load_link" }
+
+  %div
+    - if current_user
+      Logged in as:
+      = current_user.name
+      = link_to "Logout",
+        "#{current_user_path}/#{::CurrentUser.authentication_key}/sign_in"
+    - else
+      = link_to "Sign In",
+        "#{current_user_path}/#{::CurrentUser.authentication_key}/sign_in"
+
 %div
   %hr

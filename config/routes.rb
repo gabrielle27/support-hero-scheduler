@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
+  mount CurrentUser::Engine => '/current_user'
 
+  root 'schedules#index'
 
   get 'holidays/feed' => 'holidays#feed', defaults: { format: 'json' }
 
@@ -19,4 +21,6 @@ Rails.application.routes.draw do
   end
 
   get 'schedules/:employee_id' => 'schedules#index'
+  get 'signed_in' => 'application#signed_in'
+
 end

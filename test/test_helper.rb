@@ -38,5 +38,8 @@ class ActiveSupport::TestCase
     resp.fetch(key)
   end
 
+  def sign_in_user(employee)
+    session[::CurrentUser::USER_SESSION_KEY] = employee.id
+  end
 
 end
