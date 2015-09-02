@@ -51,4 +51,5 @@ group :development do
 end
 
 group :test do
+  gem 'delorean'
 end

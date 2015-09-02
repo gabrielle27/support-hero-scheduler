@@ -1,0 +1,3 @@
+one:
+  name: "Jim Henson Day"
+  support_date: <%= (Date.today + 2).to_s %>

@@ -1,0 +1,4 @@
+one:
+  id: 1
+  employee_id: 1
+  support_date: <%= Date.today %>

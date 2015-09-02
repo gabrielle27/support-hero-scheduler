@@ -1,0 +1,9 @@
+en:
+  reschedule_error: "Sorry, the schedule cannot accomodate this conflict"
+  activerecord:
+    errors:
+      models:
+        conflict:
+          attributes:
+            employee_id:
+              taken: "You have already marked one of your support days as undoable"
