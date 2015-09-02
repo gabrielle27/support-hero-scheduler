@@ -17,6 +17,9 @@ class SchedulesController < ApplicationController
         "#{Employee.table_name}.id AS employee_id"
       ])
 
+    if params[:employee_id].present?
+      schedules = schedules.where(employee_id: params[:employee_id])
+    end
     respond_with schedules
   end
 end

@@ -6,5 +6,11 @@
     - else
       No one is on duty today
 
+  %div
+    = label_tag 'employee', 'View Schedule For:'
+    = select_tag(:employee, options_from_collection_for_select(Employee.all,
+                              "id", "name", params[:employee_id]),
+                              { :include_blank => "Everyone" } )
+
 %div
   %hr

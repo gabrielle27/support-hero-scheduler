@@ -4,6 +4,9 @@ eventTransform = (eventData) ->
   eventData
 
 $(document).ready ->
+  $("#employee").on "change", ->
+    window.location.href = "/schedules/" + $(this).children("option:selected").val()
+
   $('#calendar').fullCalendar
     weekends: false
     eventSources: [
