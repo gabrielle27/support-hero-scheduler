@@ -12,5 +12,11 @@
                               "id", "name", params[:employee_id]),
                               { :include_blank => "Everyone" } )
 
+  %div
+    = link_to "Clear Schedule", clear_schedules_path, { method: :delete,
+        data: { :confirm => "Are you sure you would like to clear the schedule?" } }
+
+  %div
+    = link_to "Load Schedule", nil, { :id => "schedule_load_link" }
 %div
   %hr

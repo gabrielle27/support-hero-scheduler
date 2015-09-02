@@ -1,0 +1,5 @@
+%div#schedule_load_form{ :title => "Create Schedule" }
+  %p
+    Create a schedule from a text file list of employees.
+  =form_tag set_schedule_schedules_path, method: :post, multipart: true do
+    =file_field(:schedule, :file)

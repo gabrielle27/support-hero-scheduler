@@ -2,6 +2,8 @@ class SchedulesController < ApplicationController
 
   include SchedulesControllable
 
+  require 'csv'
+
   respond_to :json
 
   def index
@@ -22,4 +24,21 @@ class SchedulesController < ApplicationController
     end
     respond_with schedules
   end
+
+  def set_schedule
+    file = params[:schedule][:file]
+    list = CSV.read(file.tempfile.path).flatten
+    Schedule.from_list(list)
+  rescue Exception => e
+    flash[:notice] = "There was a problem creating the schedule. " +
+                     "Please try again."
+  ensure
+    redirect_to root_url
+  end
+
+  def clear
+    Employee.destroy_all
+    redirect_to root_url
+  end
+
 end

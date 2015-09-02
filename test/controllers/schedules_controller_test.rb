@@ -34,4 +34,37 @@ class SchedulesControllerTest < ActionController::TestCase
     assert json_value(@response, "support_date") == schedule.support_date.to_s
   end
 
+  test "set schedule" do
+    post :set_schedule, format: :json
+    assert_redirected_to root_url
+  end
+
+  test "load schedule from file" do
+    test_file = "#{Rails.root}/test/fixtures/files/schedule.txt"
+    file = Rack::Test::UploadedFile.new(test_file, "image/jpeg")
+
+    original_count = Schedule.count
+
+    post :set_schedule, format: :json, schedule: { file: file }
+
+    assert Schedule.count == original_count + 40
+  end
+
+  test "should handle schedule load error" do
+    post :set_schedule, format: :json
+    msg = "There was a problem creating the schedule. Please try again."
+    assert_equal msg, flash[:notice]
+  end
+
+  test "clear schedule should redirect to schedule page" do
+    delete :clear, format: :json
+    assert_redirected_to root_url
+  end
+
+  test "clear schedule should clear the schedule" do
+    delete :clear, format: :json
+
+    assert Schedule.count == 0
+  end
+
 end

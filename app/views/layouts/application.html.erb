@@ -8,6 +8,12 @@
 </head>
 <body>
 
+<script type="text/javascript">
+  <% flash.each do |key, value| %>
+    $.prompt("<%= value %>");
+  <% end %>
+</script>
+
 <%= yield %>
 
 </body>

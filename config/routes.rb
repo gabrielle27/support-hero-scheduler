@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   resources :schedules, only: [:index] do
     collection do
       get 'feed', defaults: { format: 'json' }
+      delete 'clear'
+      post :set_schedule
     end
   end
 
