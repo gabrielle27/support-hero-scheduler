@@ -8,31 +8,6 @@ eventTransform = (eventData) ->
   eventData.start = eventData.support_date
   eventData
 
-scheduleEventClickResponse = (calEvent) ->
-  $.ajax(url: '/signed_in').done (data) ->
-    if data
-      if data.id == calEvent.employee_id
-        add_conflict calEvent
-      else
-        swap_request_dialog calEvent
-    return
-  return
-
-swapRequestClickResponse = (calEvent) ->
-  $.ajax(url: '/signed_in').done (data) ->
-    if data.id == calEvent.employee_id
-      confirm_swap_dialog calEvent
-    return
-  return
-
-eventClickResponse = (calEvent, jsEvent, view) ->
-  if dateIsCurrent(calEvent)
-    if calEvent.event_type == 'schedule'
-      scheduleEventClickResponse calEvent
-    else if calEvent.event_type == 'swap request'
-      swapRequestClickResponse calEvent
-  return
-
 add_conflict = (calEvent) ->
   $.prompt 'Select yes to reschedule for a different day.',
     title: 'Are you unable to work on this day?'
@@ -59,18 +34,6 @@ add_conflict = (calEvent) ->
       return
   return
 
-swap_request_dialog = (calEvent) ->
-  $.ajax(url: '/employee/dates').done (data) ->
-    if data and data.length
-      $.each data, ->
-        $('#src_schedule_id').append $(document.createElement('option')).val(@id).html(@support_date)
-        return
-      $('.swap-date').html calEvent.start.format('YYYY-MM-DD')
-      $('#target_schedule_id').val calEvent.id
-      schedule_swapper.dialog 'open'
-    return
-  return
-
 confirm_swap_dialog = (calEvent) ->
   $.prompt calEvent.src_name + ' would like to swap support hero duty for ' + calEvent.src_support_date + ' with you.',
     title: 'Confirm Swap Request'
@@ -94,6 +57,13 @@ confirm_swap_dialog = (calEvent) ->
           return
       $.prompt.close()
       return
+  return
+
+swapRequestClickResponse = (calEvent) ->
+  $.ajax(url: '/signed_in').done (data) ->
+    if data.id == calEvent.employee_id
+      confirm_swap_dialog calEvent
+    return
   return
 
 $(document).ready ->
@@ -134,6 +104,36 @@ $(document).ready ->
         schedule_swapper.dialog 'close'
         return
   )
+
+  swap_request_dialog = (calEvent) ->
+    $.ajax(url: '/employee/dates').done (data) ->
+      if data and data.length
+        $.each data, ->
+          $('#src_schedule_id').append $(document.createElement('option')).val(@id).html(@support_date)
+          return
+        $('.swap-date').html calEvent.start.format('YYYY-MM-DD')
+        $('#target_schedule_id').val calEvent.id
+        schedule_swapper.dialog 'open'
+      return
+    return
+
+  scheduleEventClickResponse = (calEvent) ->
+    $.ajax(url: '/signed_in').done (data) ->
+      if data
+        if data.id == calEvent.employee_id
+          add_conflict calEvent
+        else
+          swap_request_dialog calEvent
+      return
+    return
+
+  eventClickResponse = (calEvent, jsEvent, view) ->
+    if dateIsCurrent(calEvent)
+      if calEvent.event_type == 'schedule'
+        scheduleEventClickResponse calEvent
+      else if calEvent.event_type == 'swap request'
+        swapRequestClickResponse calEvent
+    return
 
   $('#calendar').fullCalendar
     weekends: false
